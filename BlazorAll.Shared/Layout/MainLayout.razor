@@ -1,0 +1,19 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+            <SectionOutlet SectionName="AppbarSection" />
+
+            <a href="https://github.com/ric-ros" target="_blank" class="ms-auto">About</a>
+        </div>
+
+        <div class="container-lg">
+            @Body
+        </div>
+    </main>
+</div>

@@ -1,0 +1,42 @@
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+@inject ProductService ProductService
+@inject HttpClient Http
+
+<div class="product-grid">
+    <QuickGrid Pagination="pagination" Items="products" >
+        <TemplateColumn Title="Thumbnail" Align="Align.Center">
+            <img class="img-fluid" src="@context.Thumbnail" />
+        </TemplateColumn>
+        <PropertyColumn Property="@(f => f.Title)" Sortable="true" Title="Title" />
+        <PropertyColumn Property="@(f => f.Description)" Sortable="true" Title="Description" />
+        <PropertyColumn Property="@(f => f.Price)" Sortable="true" Title="Price" />
+        <PropertyColumn Property="@(f => f.DiscountPercentage)" Sortable="true" Title="Discount Percentage" />
+        <PropertyColumn Property="@(f => f.Rating)" Sortable="true" Title="Rating" />
+        <PropertyColumn Property="@(f => f.Stock)" Sortable="true" Title="Stock" />
+        <PropertyColumn Property="@(f => f.Brand)" Sortable="true" Title="Brand" />
+        <PropertyColumn Property="@(f => f.Category)" Sortable="true" Title="Category" />
+    </QuickGrid>
+
+    <Paginator State="@pagination" />
+</div>
+
+@code {
+    IQueryable<Product>? products;
+    PaginationState pagination = new() { ItemsPerPage = 5 };
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var productList = await ProductService.GetProducts();
+            products = productList.AsQueryable();
+
+            StateHasChanged();
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}
+
+
